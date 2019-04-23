@@ -1,0 +1,3 @@
+las rutas son los llamados "controladores" en las API de php que se encargan
+de recoger todos los "get,post,put y delete" los cuales serán llamados
+mediante urls

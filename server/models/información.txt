@@ -1,0 +1,5 @@
+los modelos son como las tablas en las bd relacionales.
+si genero un modelo de datos nuevo y le aplico un método del objeto 
+moongose, como por ejemplo "save" que es guardar,
+automaticamente mongodb lo trata como un modelo y genera una colección donde
+guardará todos los objetos que cumplan las reglas de ese modelo.
