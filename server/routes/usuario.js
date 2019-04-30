@@ -9,9 +9,16 @@ const _ = require('underscore'); //npm install underscore
 //declaro un objeto usuario procedente del modelo Usuario de los ficheros "MODELOS"
 const Usuario = require('../models/usuario');
 
+//importo el midleware generado por mi
+const { verificarToken, verificarAdmin_Role } = require('../middlewares/autenticacion');
+
+
 const app = express();
 
-app.get('/usuario', function(req, res) {
+//este servicio devuelve una consulta de usuarios 
+app.get('/usuario', verificarToken, (req, res) => {
+
+
     //los parámetros opcionales caen en el objeto req.query
     // los parámetros opcionales se mandan por la url con un signo ? /usuario?desde=10&limite=10
     let desde = req.query.desde || 0;
@@ -50,7 +57,8 @@ app.get('/usuario', function(req, res) {
 
 })
 
-app.post('/usuario', function(req, res) {
+//este servicio genera un nuevo usuario
+app.post('/usuario', [verificarToken, verificarAdmin_Role], function(req, res) {
     // "req.body" esto viene del bodyparser
     let body = req.body;
 
@@ -91,7 +99,8 @@ app.post('/usuario', function(req, res) {
     // }
 })
 
-app.put('/usuario/:id', function(req, res) {
+//este servicio modifica un usuario existente
+app.put('/usuario/:id', [verificarToken, verificarAdmin_Role], function(req, res) {
     //req.params trae los parámetros pasados por url "get" (/usuario:id)
     //obtener parámetro pasado por la url de put 
     let id = req.params.id;
@@ -138,7 +147,7 @@ app.put('/usuario/:id', function(req, res) {
 })
 
 //este delete solo marca como desactivado la ocurrencia coincidente con el id
-app.delete('/usuario/:id', function(req, res) {
+app.delete('/usuario/:id', [verificarToken, verificarAdmin_Role], function(req, res) {
 
     //req.params trae los parámetros pasados por url "get" (/usuario:id)
     let id = req.params.id;

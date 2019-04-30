@@ -16,8 +16,8 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
-//importo y uso la ruta del usuario
-app.use(require('./routes/usuario'));
+//importo y uso las rutas
+app.use(require('./routes/index'));
 
 
 //conectamos con la base de datos de mongodb
