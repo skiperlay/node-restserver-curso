@@ -5,6 +5,9 @@ const express = require('express'); //npm install express --save
 //paquete mongoose para establecer la conexión con mongodb
 const mongoose = require('mongoose'); //npm install mongoose --save
 
+//Obtengo el path de la raiz que lo trae node por defecto
+const path = require('path');
+
 const app = express();
 
 //body-parser para parsear la información que va por post
@@ -15,6 +18,10 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 // parse application/json
 app.use(bodyParser.json())
+
+//habilitar la carpeta public
+app.use(express.static(path.resolve(__dirname, '../public')));
+//el objeto path tiene un método "resolve" que obtiene los 2 parámetros , los procesa y devulve el path correcto ( no se bien como funciona pero funciona)
 
 //importo y uso las rutas
 app.use(require('./routes/index'));
