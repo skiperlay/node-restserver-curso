@@ -15,6 +15,7 @@ const Usuario = require('../models/usuario');
 
 const app = express();
 
+//servicio para hacer login en la aplicación
 app.post('/login', (req, res) => {
 
     let body = req.body;

@@ -43,6 +43,13 @@ app.get('/usuario', verificarToken, (req, res) => {
             //la función count() devuelve el número de ocurrencias segun las condiciones que estén en las llaves
             Usuario.countDocuments({ estado: true }, (err, conteo) => {
 
+                if (err) {
+                    return res.status(400).json({
+                        ok: false,
+                        err
+                    })
+                }
+
                 res.json({
                     ok: true,
                     usuarios,
@@ -59,7 +66,7 @@ app.get('/usuario', verificarToken, (req, res) => {
 
 //este servicio genera un nuevo usuario
 app.post('/usuario', [verificarToken, verificarAdmin_Role], function(req, res) {
-    // "req.body" esto viene del bodyparser
+    // "req.body" esto viene del bodyparser (post)
     let body = req.body;
 
     let usuario = new Usuario({
