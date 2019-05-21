@@ -18,7 +18,7 @@ const jwt = require('jsonwebtoken')
 //========================
 let verificarToken = (req, res, next) => {
 
-    //al pasar el token mediante los headers la forma de obetener la variable token es:
+    //al pasar el token mediante los headers la forma de obtener la variable token es:
     //mediante req.get('nombreVariable)
     let token = req.get('token');
     jwt.verify(token, process.env.SEED, (err, decoded) => {
@@ -39,6 +39,9 @@ let verificarToken = (req, res, next) => {
     });
 };
 
+//========================
+// Verificar Admin role
+//========================
 let verificarAdmin_Role = (req, res, next) => {
     console.log(res);
     let usuario = req.decoded;
@@ -58,8 +61,38 @@ let verificarAdmin_Role = (req, res, next) => {
 
 
 };
+//========================
+// Verificar token para imagen
+//========================
+/*
+Este verificador permite sacar el token del url en vez de desde el header y verificarlo
+este es el procedimiento correcto cuando se trata de consultar imagene porque al consultar 
+el usuario desde un html y tener que mostrar la imagen en un "img" de html hay que comprobar
+el token desde el html, es decir, en el frontend , no pudiendose hacer desde el backend
+*/
+let verificarTokenImg = (req, res, next) => {
+    let token = req.query.token;
+    jwt.verify(token, process.env.SEED, (err, decoded) => {
+
+        if (err) {
+            return res.status(401).json({
+                ok: false,
+                err: {
+                    message: 'token no válido'
+                }
+            })
+        }
+
+        //añado a la request "req" la variable "decoded" donde guardo el resultado recibido en el callback
+        //para obtenerlo mas tarde en el model como por ejemplo el model "usuario" si fuera necesario
+        req.decoded = decoded.usuario;
+        next();
+    });
+
+};
 
 module.exports = {
     verificarToken,
-    verificarAdmin_Role
+    verificarAdmin_Role,
+    verificarTokenImg
 }
